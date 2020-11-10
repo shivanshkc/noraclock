@@ -58,3 +58,12 @@ func (m *memoryService) PostMemory(args map[string]interface{}) (*Result, error)
 
 	return &Result{StatusCode: http.StatusCreated}, nil
 }
+
+func (m *memoryService) PatchMemory(args map[string]interface{}) (*Result, error) {
+	err := tables.Memory.UpdateByID(args["memoryID"].(string), args)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Result{StatusCode: http.StatusOK}, nil
+}

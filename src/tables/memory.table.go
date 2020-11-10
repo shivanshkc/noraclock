@@ -78,3 +78,30 @@ func (m *memoryTable) Insert(id string, title string, body string) error {
 	_, err := database.GetPostgreSQL().Exec(query, id, title, body)
 	return err
 }
+
+func (m *memoryTable) UpdateByID(id string, updates map[string]interface{}) error {
+	set := ""
+	argPos := 1
+	var values []interface{}
+
+	v, exists := updates["title"]
+	if exists {
+		set += fmt.Sprintf(`"title" = $%d, `, argPos)
+		argPos++
+		values = append(values, v)
+	}
+	v, exists = updates["body"]
+	if exists {
+		set += fmt.Sprintf(`"body" = $%d, `, argPos)
+		argPos++
+		values = append(values, v)
+	}
+
+	// Removing the trailing comma and space from 'set'.
+	set = set[:len(set)-2]
+	values = append(values, id)
+
+	query := fmt.Sprintf(`UPDATE %s SET %s WHERE "id" = $%d`, configs.Postgres.MemoryTableName, set, argPos)
+	_, err := database.GetPostgreSQL().Exec(query, values...)
+	return err
+}

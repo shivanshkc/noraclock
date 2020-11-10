@@ -84,6 +84,13 @@ func patchMemoryHandler(writer http.ResponseWriter, req *http.Request) {
 		sendError(writer, exception.Validation(err.Error()))
 		return
 	}
+
+	result, err := business.Memory.PatchMemory(args)
+	if err != nil {
+		sendError(writer, err)
+		return
+	}
+	result.Send(writer)
 }
 
 func deleteMemoryHandler(writer http.ResponseWriter, req *http.Request) {}
