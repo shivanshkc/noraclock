@@ -65,6 +65,25 @@ func postMemoryHandler(writer http.ResponseWriter, req *http.Request) {
 	result.Send(writer)
 }
 
-func patchMemoryHandler(writer http.ResponseWriter, req *http.Request) {}
+func patchMemoryHandler(writer http.ResponseWriter, req *http.Request) {
+	args := map[string]interface{}{
+		"memoryID": mux.Vars(req)["memoryID"],
+	}
+
+	body, err := readBody(req)
+	if err != nil {
+		sendError(writer, exception.Validation(err.Error()))
+		return
+	}
+
+	for key, value := range body {
+		args[key] = value
+	}
+
+	if err = validator.Memory.PatchMemory(args); err != nil {
+		sendError(writer, exception.Validation(err.Error()))
+		return
+	}
+}
 
 func deleteMemoryHandler(writer http.ResponseWriter, req *http.Request) {}

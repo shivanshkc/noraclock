@@ -19,11 +19,14 @@ func Handlers() http.Handler {
 	router.Use(middleware.NoraGuard)
 	router.Use(middleware.ResponseHeader)
 
-	router.HandleFunc("/api/noraAccess/memory/{memoryID}", getMemoryByIDHandler).Methods(http.MethodGet, http.MethodOptions)
+	router.HandleFunc("/api/noraAccess/memory/{memoryID}", getMemoryByIDHandler).
+		Methods(http.MethodGet, http.MethodOptions)
+	router.HandleFunc("/api/noraAccess/memory/{memoryID}", patchMemoryHandler).
+		Methods(http.MethodPatch, http.MethodOptions)
+	router.HandleFunc("/api/noraAccess/memory/{memoryID}", deleteMemoryHandler).
+		Methods(http.MethodDelete, http.MethodOptions)
 	router.HandleFunc("/api/noraAccess/memory", getMemoryHandler).Methods(http.MethodGet, http.MethodOptions)
 	router.HandleFunc("/api/noraAccess/memory", postMemoryHandler).Methods(http.MethodPost, http.MethodOptions)
-	router.HandleFunc("/api/noraAccess/memory", patchMemoryHandler).Methods(http.MethodPatch, http.MethodOptions)
-	router.HandleFunc("/api/noraAccess/memory", deleteMemoryHandler).Methods(http.MethodDelete, http.MethodOptions)
 
 	router.HandleFunc("/api/noraAccess/time", func(writer http.ResponseWriter, req *http.Request) {
 		writer.WriteHeader(http.StatusOK)

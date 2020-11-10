@@ -18,3 +18,28 @@ func (m *memoryRestValidator) GetMemories(args map[string]interface{}) error {
 func (m *memoryRestValidator) PostMemory(args map[string]interface{}) error {
 	return validation.Validate(args, validation.Map(titleParam, bodyParam))
 }
+
+func (m *memoryRestValidator) PatchMemory(args map[string]interface{}) error {
+	if err := validation.Validate(args, validation.Map(memoryIDParam).AllowExtraKeys()); err != nil {
+		return err
+	}
+
+	_, tExists := args["title"]
+	_, bExists := args["body"]
+
+	if !tExists && !bExists {
+		return errEmptyUpdate
+	}
+	if tExists {
+		if err := validation.Validate(args, validation.Map(titleParam).AllowExtraKeys()); err != nil {
+			return err
+		}
+	}
+	if bExists {
+		if err := validation.Validate(args, validation.Map(bodyParam).AllowExtraKeys()); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}

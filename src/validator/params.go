@@ -24,7 +24,6 @@ var titleParam = validation.Key(
 var bodyParam = validation.Key(
 	"body",
 	validation.Match(regexp.MustCompile(constants.MatchAllRegex)),
-	validation.Length(constants.TitleMinLength, constants.TitleMaxLength),
 	validation.Length(constants.BodyMinLength, constants.BodyMaxLength),
 )
 
