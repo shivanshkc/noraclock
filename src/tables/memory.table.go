@@ -102,6 +102,13 @@ func (m *memoryTable) UpdateByID(id string, updates map[string]interface{}) erro
 	values = append(values, id)
 
 	query := fmt.Sprintf(`UPDATE %s SET %s WHERE "id" = $%d`, configs.Postgres.MemoryTableName, set, argPos)
-	_, err := database.GetPostgreSQL().Exec(query, values...)
-	return err
+	affected, err := database.GetPostgreSQL().Exec(query, values...)
+	if err != nil {
+		return err
+	}
+
+	if affected == 0 {
+		return exception.MemoryNotFound("")
+	}
+	return nil
 }
