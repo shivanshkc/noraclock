@@ -10,3 +10,7 @@ var Memory = &memoryRestValidator{}
 func (m *memoryRestValidator) PostMemory(args map[string]interface{}) error {
 	return validation.Validate(args, validation.Map(titleParam, bodyParam))
 }
+
+func (m *memoryRestValidator) GetMemoryByID(args map[string]interface{}) error {
+	return validation.Validate(args, validation.Map(memoryIDParam))
+}
