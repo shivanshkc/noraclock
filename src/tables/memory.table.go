@@ -63,6 +63,9 @@ func (m *memoryTable) Get(limit int64, offset int64) ([]*models.Memory, error) {
 		memories = append(memories, memory)
 	}
 
+	if memories == nil {
+		memories = []*models.Memory{}
+	}
 	return memories, nil
 }
 
