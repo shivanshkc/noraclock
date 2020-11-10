@@ -37,12 +37,12 @@ func getMemoryHandler(writer http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// result, err := business.Memory.GetMemories(args)
-	// if err != nil {
-	// 	sendError(writer, err)
-	// 	return
-	// }
-	// result.Send(writer)
+	result, err := business.Memory.GetMemories(args)
+	if err != nil {
+		sendError(writer, err)
+		return
+	}
+	result.Send(writer)
 }
 
 func postMemoryHandler(writer http.ResponseWriter, req *http.Request) {

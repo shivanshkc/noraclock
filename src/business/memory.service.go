@@ -30,6 +30,10 @@ func (m *memoryService) GetMemoryByID(args map[string]interface{}) (*Result, err
 	}, nil
 }
 
+func (m *memoryService) GetMemories(args map[string]interface{}) (*Result, error) {
+	return nil, nil
+}
+
 func (m *memoryService) PostMemory(args map[string]interface{}) (*Result, error) {
 	memoryID := uuid.New().String()
 
