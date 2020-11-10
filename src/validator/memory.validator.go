@@ -43,3 +43,7 @@ func (m *memoryRestValidator) PatchMemory(args map[string]interface{}) error {
 
 	return nil
 }
+
+func (m *memoryRestValidator) DeleteMemory(args map[string]interface{}) error {
+	return validation.Validate(args, validation.Map(memoryIDParam))
+}

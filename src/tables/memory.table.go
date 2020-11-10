@@ -112,3 +112,17 @@ func (m *memoryTable) UpdateByID(id string, updates map[string]interface{}) erro
 	}
 	return nil
 }
+
+func (m *memoryTable) DeleteByID(id string) error {
+	query := fmt.Sprintf(`DELETE FROM %s WHERE "id" = $1`, configs.Postgres.MemoryTableName)
+
+	affected, err := database.GetPostgreSQL().Exec(query, id)
+	if err != nil {
+		return err
+	}
+
+	if affected == 0 {
+		return exception.MemoryNotFound("")
+	}
+	return nil
+}

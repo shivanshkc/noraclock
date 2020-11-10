@@ -93,4 +93,20 @@ func patchMemoryHandler(writer http.ResponseWriter, req *http.Request) {
 	result.Send(writer)
 }
 
-func deleteMemoryHandler(writer http.ResponseWriter, req *http.Request) {}
+func deleteMemoryHandler(writer http.ResponseWriter, req *http.Request) {
+	args := map[string]interface{}{
+		"memoryID": mux.Vars(req)["memoryID"],
+	}
+
+	if err := validator.Memory.DeleteMemory(args); err != nil {
+		sendError(writer, exception.Validation(err.Error()))
+		return
+	}
+
+	result, err := business.Memory.DeleteMemory(args)
+	if err != nil {
+		sendError(writer, err)
+		return
+	}
+	result.Send(writer)
+}

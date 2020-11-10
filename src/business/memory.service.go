@@ -67,3 +67,12 @@ func (m *memoryService) PatchMemory(args map[string]interface{}) (*Result, error
 
 	return &Result{StatusCode: http.StatusOK}, nil
 }
+
+func (m *memoryService) DeleteMemory(args map[string]interface{}) (*Result, error) {
+	err := tables.Memory.DeleteByID(args["memoryID"].(string))
+	if err != nil {
+		return nil, err
+	}
+
+	return &Result{StatusCode: http.StatusOK}, nil
+}
