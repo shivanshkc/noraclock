@@ -16,4 +16,7 @@ const (
 	BodyMaxLength = 100000
 	// BodyMinLength : Min length of the memory body.
 	BodyMinLength = 0
+
+	// MaxLimit : Max value of Limit
+	MaxLimit = 100
 )
