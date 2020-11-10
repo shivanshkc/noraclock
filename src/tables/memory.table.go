@@ -36,6 +36,36 @@ func (m *memoryTable) GetByID(id string) (*models.Memory, error) {
 	return memory, nil
 }
 
+func (m *memoryTable) Get(limit int64, offset int64) ([]*models.Memory, error) {
+	query := fmt.Sprintf(`SELECT * FROM %s ORDER BY "createdAt" DESC LIMIT $1 OFFSET $2`, configs.Postgres.MemoryTableName)
+
+	var memories []*models.Memory
+	rows, err := database.GetPostgreSQL().Query(query, limit, offset)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	for rows.Next() {
+		memory := &models.Memory{}
+		err := rows.Scan(
+			&memory.ID,
+			&memory.Title,
+			&memory.Body,
+			&memory.CreatedAt,
+			&memory.UpdatedAt,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		memories = append(memories, memory)
+	}
+
+	return memories, nil
+}
+
 func (m *memoryTable) Insert(id string, title string, body string) error {
 	query := fmt.Sprintf(
 		`INSERT INTO %s ("id","title","body") VALUES ($1,$2,$3)`,

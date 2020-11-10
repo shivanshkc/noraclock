@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/google/uuid"
 	"net/http"
-	"noraclock/v2/src/exception"
 	"noraclock/v2/src/tables"
 )
 
@@ -21,7 +20,7 @@ func (m *memoryService) GetMemoryByID(args map[string]interface{}) (*Result, err
 
 	body, err := json.Marshal(map[string]interface{}{"data": memory})
 	if err != nil {
-		return nil, exception.Unexpected(err.Error())
+		return nil, err
 	}
 
 	return &Result{
@@ -31,7 +30,22 @@ func (m *memoryService) GetMemoryByID(args map[string]interface{}) (*Result, err
 }
 
 func (m *memoryService) GetMemories(args map[string]interface{}) (*Result, error) {
-	return nil, nil
+	limit, offset := limitOffsetParser(args)
+
+	memories, err := tables.Memory.Get(limit, offset)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := json.Marshal(map[string]interface{}{"data": memories})
+	if err != nil {
+		return nil, err
+	}
+
+	return &Result{
+		StatusCode: http.StatusOK,
+		Body:       body,
+	}, nil
 }
 
 func (m *memoryService) PostMemory(args map[string]interface{}) (*Result, error) {
