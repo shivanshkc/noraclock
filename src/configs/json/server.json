@@ -1,0 +1,12 @@
+{
+  "address": {
+    "info": "Address for HTTP Server",
+    "default": "NA",
+    "env": "SERVER_ADDRESS"
+  },
+  "port": {
+    "info": "Port for HTTP Server",
+    "default": "NA",
+    "env": "SERVER_PORT"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "host": {
+    "info": "Host for PostgreSQL",
+    "default": "NA",
+    "env": "POSTGRES_HOST"
+  },
+  "port": {
+    "info": "Port for PostgreSQL",
+    "default": "NA",
+    "env": "POSTGRES_PORT"
+  },
+  "user": {
+    "info": "PostgreSQL User",
+    "default": "NA",
+    "env": "POSTGRES_USER"
+  },
+  "password": {
+    "info": "PostgreSQL User Password",
+    "default": "NA",
+    "env": "POSTGRES_PASSWORD"
+  },
+  "dbName": {
+    "info": "PostgreSQL DB Name",
+    "default": "NA",
+    "env": "POSTGRES_DB_NAME"
+  },
+  "requestTimeout": {
+    "info": "PostgreSQL Request Timeout in seconds",
+    "default": "NA",
+    "env": "POSTGRES_REQUEST_TIMEOUT",
+    "format": "int"
+  },
+  "memoryTableName": {
+    "info": "PostgreSQL Memory table name",
+    "default": "NA",
+    "env": "POSTGRES_MEMORY_TABLE_NAME"
+  }
+}
