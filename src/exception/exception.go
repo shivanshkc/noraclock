@@ -39,8 +39,6 @@ func (e *Exception) ToJSON() []byte {
 
 // Send : Accepts a ResponseWriter and sends the Exception as Response using it.
 func (e *Exception) Send(writer http.ResponseWriter) {
-	writer.Header().Set("content-type", "application/json")
-
 	writer.WriteHeader(e.Code)
 	_, err := writer.Write(e.ToJSON())
 	if err != nil {

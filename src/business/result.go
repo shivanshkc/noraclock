@@ -16,8 +16,6 @@ type Result struct {
 
 // Send : Accepts a ResponseWriter and writes itself using it.
 func (hr *Result) Send(writer http.ResponseWriter) error {
-	writer.Header().Set("content-type", "application/json")
-
 	writer.WriteHeader(hr.StatusCode)
 
 	for key, value := range hr.Headers {

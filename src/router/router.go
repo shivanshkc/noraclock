@@ -17,9 +17,9 @@ func Handlers() http.Handler {
 	router.Use(middleware.Interceptor)
 	router.Use(middleware.CORS)
 	router.Use(middleware.NoraGuard)
+	router.Use(middleware.ResponseHeader)
 
 	router.HandleFunc("/api/noraAccess/time", func(writer http.ResponseWriter, req *http.Request) {
-		writer.Header().Set("content-type", "application/json")
 		writer.WriteHeader(http.StatusOK)
 		_, _ = writer.Write([]byte(fmt.Sprintf(`{"time":%d}`, constants.NoraTime)))
 	}).Methods(http.MethodGet, http.MethodOptions)

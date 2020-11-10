@@ -5,6 +5,7 @@ import (
 	"noraclock/v2/src/configs"
 	"noraclock/v2/src/exception"
 	"noraclock/v2/src/logger"
+	"strings"
 	"time"
 )
 
@@ -42,6 +43,16 @@ func NoraGuard(next http.Handler) http.Handler {
 		if password != configs.Service.Password {
 			exception.Unauthorized("").Send(writer)
 			return
+		}
+		next.ServeHTTP(writer, req)
+	})
+}
+
+// ResponseHeader : Sets common Response Headers.
+func ResponseHeader(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(writer http.ResponseWriter, req *http.Request) {
+		if strings.HasPrefix(req.URL.String(), "/api/noraAccess") {
+			writer.Header().Set("content-type", "application/json")
 		}
 		next.ServeHTTP(writer, req)
 	})
