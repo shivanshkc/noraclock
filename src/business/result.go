@@ -15,7 +15,7 @@ type Result struct {
 }
 
 // Send : Accepts a ResponseWriter and writes itself using it.
-func (hr *Result) Send(writer http.ResponseWriter) error {
+func (hr *Result) Send(writer http.ResponseWriter) {
 	writer.WriteHeader(hr.StatusCode)
 
 	for key, value := range hr.Headers {
@@ -26,5 +26,4 @@ func (hr *Result) Send(writer http.ResponseWriter) error {
 	if err != nil {
 		log.Sugar().Errorf("Failed to write response. %s", err.Error())
 	}
-	return err
 }

@@ -21,7 +21,7 @@ func Handlers() http.Handler {
 
 	// router.HandleFunc("/api/noraAccess/memory/{memoryID}", ).Methods(http.MethodGet, http.MethodOptions)
 	// router.HandleFunc("/api/noraAccess/memory", ).Methods(http.MethodGet, http.MethodOptions)
-	// router.HandleFunc("/api/noraAccess/memory", ).Methods(http.MethodPost, http.MethodOptions)
+	router.HandleFunc("/api/noraAccess/memory", postMemoryHandler).Methods(http.MethodPost, http.MethodOptions)
 	// router.HandleFunc("/api/noraAccess/memory", ).Methods(http.MethodPatch, http.MethodOptions)
 	// router.HandleFunc("/api/noraAccess/memory", ).Methods(http.MethodDelete, http.MethodOptions)
 
