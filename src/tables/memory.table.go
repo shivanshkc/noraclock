@@ -36,16 +36,20 @@ func (m *memoryTable) GetByID(id string) (*models.Memory, error) {
 	return memory, nil
 }
 
-func (m *memoryTable) Get(limit int64, offset int64) ([]*models.Memory, error) {
-	query := fmt.Sprintf(`SELECT * FROM %s ORDER BY "createdAt" DESC LIMIT $1 OFFSET $2`, configs.Postgres.MemoryTableName)
+func (m *memoryTable) Get(limit int64, offset int64) ([]*models.Memory, int, error) {
+	query := fmt.Sprintf(
+		`SELECT *, COUNT(*) OVER() FROM %s ORDER BY "createdAt" DESC LIMIT $1 OFFSET $2`,
+		configs.Postgres.MemoryTableName,
+	)
 
 	var memories []*models.Memory
 	rows, err := database.GetPostgreSQL().Query(query, limit, offset)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer func() { _ = rows.Close() }()
 
+	var count int
 	for rows.Next() {
 		memory := &models.Memory{}
 		err := rows.Scan(
@@ -54,10 +58,11 @@ func (m *memoryTable) Get(limit int64, offset int64) ([]*models.Memory, error) {
 			&memory.Body,
 			&memory.CreatedAt,
 			&memory.UpdatedAt,
+			&count,
 		)
 
 		if err != nil {
-			return nil, err
+			return nil, 0, err
 		}
 
 		memories = append(memories, memory)
@@ -66,7 +71,7 @@ func (m *memoryTable) Get(limit int64, offset int64) ([]*models.Memory, error) {
 	if memories == nil {
 		memories = []*models.Memory{}
 	}
-	return memories, nil
+	return memories, count, nil
 }
 
 func (m *memoryTable) Insert(id string, title string, body string) error {

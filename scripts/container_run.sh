@@ -18,6 +18,7 @@ if ! docker run \
   --restart unless-stopped \
   --env-file env/prod.env \
   --net host \
+  --volume "$HOME"/service-logs/noraclock:/var/log \
   $IMAGE_NAME:"$1"; then
   echo "Failed to run container."
   exit 1

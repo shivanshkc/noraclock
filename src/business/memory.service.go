@@ -32,12 +32,14 @@ func (m *memoryService) GetMemoryByID(args map[string]interface{}) (*Result, err
 func (m *memoryService) GetMemories(args map[string]interface{}) (*Result, error) {
 	limit, offset := limitOffsetParser(args)
 
-	memories, err := tables.Memory.Get(limit, offset)
+	memories, count, err := tables.Memory.Get(limit, offset)
 	if err != nil {
 		return nil, err
 	}
 
-	body, err := json.Marshal(map[string]interface{}{"data": memories})
+	body, err := json.Marshal(map[string]map[string]interface{}{
+		"data": {"count": count, "docs": memories},
+	})
 	if err != nil {
 		return nil, err
 	}
