@@ -12,7 +12,7 @@ func (m *memoryRestValidator) GetMemoryByID(args map[string]interface{}) error {
 }
 
 func (m *memoryRestValidator) GetMemories(args map[string]interface{}) error {
-	return validation.Validate(args, validation.Map(limitParam, offsetParam))
+	return validation.Validate(args, validation.Map(limitParam, offsetParam, skipBodyParam))
 }
 
 func (m *memoryRestValidator) PostMemory(args map[string]interface{}) error {

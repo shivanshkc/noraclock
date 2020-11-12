@@ -11,4 +11,6 @@ var errLimitRange = fmt.Errorf("limit should be between 1 and %d", constants.Max
 
 var errOffset = errors.New("offset should be a non-negative integer")
 
+var errSB = errors.New("skipBody must be a boolean")
+
 var errEmptyUpdate = errors.New("no update parameters provided")

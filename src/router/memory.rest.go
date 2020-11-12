@@ -28,8 +28,9 @@ func getMemoryByIDHandler(writer http.ResponseWriter, req *http.Request) {
 
 func getMemoryHandler(writer http.ResponseWriter, req *http.Request) {
 	args := map[string]interface{}{
-		"limit":  req.URL.Query().Get("limit"),
-		"offset": req.URL.Query().Get("offset"),
+		"limit":    req.URL.Query().Get("limit"),
+		"offset":   req.URL.Query().Get("offset"),
+		"skipBody": req.URL.Query().Get("skipBody"),
 	}
 
 	if err := validator.Memory.GetMemories(args); err != nil {

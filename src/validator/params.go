@@ -74,3 +74,24 @@ var offsetParam = validation.Key(
 		return nil
 	}),
 )
+
+var skipBodyParam = validation.Key(
+	"skipBody",
+	validation.By(func(value interface{}) error {
+		strSB, ok := value.(string)
+		if !ok {
+			return errSB
+		}
+
+		if strSB == "" {
+			return nil
+		}
+
+		_, err := strconv.ParseBool(strSB)
+		if err != nil {
+			return errSB
+		}
+
+		return nil
+	}),
+)

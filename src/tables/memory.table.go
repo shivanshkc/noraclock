@@ -36,9 +36,15 @@ func (m *memoryTable) GetByID(id string) (*models.Memory, error) {
 	return memory, nil
 }
 
-func (m *memoryTable) Get(limit int64, offset int64) ([]*models.Memory, int, error) {
+func (m *memoryTable) Get(limit int64, offset int64, skipBody bool) ([]*models.Memory, int, error) {
+	bodySelect := `"body",`
+	if skipBody {
+		bodySelect = `'' as "body",`
+	}
+
 	query := fmt.Sprintf(
-		`SELECT *, COUNT(*) OVER() FROM %s ORDER BY "createdAt" DESC LIMIT $1 OFFSET $2`,
+		`SELECT "id", "title", %s "createdAt", "updatedAt", COUNT(*) OVER() FROM %s ORDER BY "createdAt" DESC LIMIT $1 OFFSET $2`,
+		bodySelect,
 		configs.Postgres.MemoryTableName,
 	)
 

@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"net/http"
 	"noraclock/v2/src/tables"
+	"strconv"
 )
 
 type memoryService struct{}
@@ -31,8 +32,12 @@ func (m *memoryService) GetMemoryByID(args map[string]interface{}) (*Result, err
 
 func (m *memoryService) GetMemories(args map[string]interface{}) (*Result, error) {
 	limit, offset := limitOffsetParser(args)
+	skipBody := false
+	if args["skipBody"] != "" {
+		skipBody, _ = strconv.ParseBool(args["skipBody"].(string))
+	}
 
-	memories, count, err := tables.Memory.Get(limit, offset)
+	memories, count, err := tables.Memory.Get(limit, offset, skipBody)
 	if err != nil {
 		return nil, err
 	}
