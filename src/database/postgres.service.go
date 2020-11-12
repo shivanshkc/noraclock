@@ -58,7 +58,7 @@ func GetPostgreSQL() *PostgreSQL {
 // Exec : Executes a query without returning rows. Returns the number of affected rows.
 func (p *PostgreSQL) Exec(query string, args ...interface{}) (int64, error) {
 	context, cancelFunc := getTimeoutContext()
-	defer cancelFunc()
+	defer cancelContext(cancelFunc)
 
 	result, err := p.DB.ExecContext(context, query, args...)
 	if err != nil {
@@ -76,7 +76,7 @@ func (p *PostgreSQL) Exec(query string, args ...interface{}) (int64, error) {
 // Query : Executes a query and returns rows.
 func (p *PostgreSQL) Query(query string, args ...interface{}) (*sql.Rows, error) {
 	context, cancelFunc := getTimeoutContext()
-	defer cancelFunc()
+	defer cancelContext(cancelFunc)
 
 	return p.DB.QueryContext(context, query, args...)
 }
@@ -84,7 +84,7 @@ func (p *PostgreSQL) Query(query string, args ...interface{}) (*sql.Rows, error)
 // QueryRow : Executes a query and returns a single row.
 func (p *PostgreSQL) QueryRow(query string, args ...interface{}) *sql.Row {
 	context, cancelFunc := getTimeoutContext()
-	defer cancelFunc()
+	defer cancelContext(cancelFunc)
 
 	return p.DB.QueryRowContext(context, query, args...)
 }
@@ -107,4 +107,11 @@ func getTimeoutContext() (ctx.Context, ctx.CancelFunc) {
 		ctx.Background(),
 		time.Duration(configs.Postgres.RequestTimeout)*time.Second,
 	)
+}
+
+func cancelContext(canceller ctx.CancelFunc) {
+	go func() {
+		time.Sleep(time.Millisecond)
+		canceller()
+	}()
 }
