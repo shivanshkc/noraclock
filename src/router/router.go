@@ -38,6 +38,5 @@ func Handlers() http.Handler {
 		_, _ = writer.Write([]byte(fmt.Sprintf("Hi, I'm %s. %s.", configs.Service.Name, configs.Service.Description)))
 	}).Methods(http.MethodGet)
 
-	router.PathPrefix("/").Handler(staticHandler)
 	return router
 }

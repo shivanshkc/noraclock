@@ -1,5 +1,4 @@
 bin/*
-static
 env/prod.env
 
 .idea

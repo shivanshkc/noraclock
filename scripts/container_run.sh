@@ -19,7 +19,6 @@ if ! docker run \
   --env-file env/prod.env \
   --net host \
   --volume "$HOME"/service-logs/noraclock:/var/log \
-  --volume "$PWD"/static:/usr/service/static \
   $IMAGE_NAME:"$1"; then
   echo "Failed to run container."
   exit 1
