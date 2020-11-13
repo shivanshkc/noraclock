@@ -39,10 +39,12 @@ func CORS(next http.Handler) http.Handler {
 // NoraGuard : Allows access to Nora user only.
 func NoraGuard(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, req *http.Request) {
-		password := req.Header.Get("x-password")
-		if password != configs.Service.Password {
-			exception.Unauthorized("").Send(writer)
-			return
+		if strings.HasPrefix(req.URL.String(), "/api") {
+			password := req.Header.Get("x-password")
+			if password != configs.Service.Password {
+				exception.Unauthorized("").Send(writer)
+				return
+			}
 		}
 		next.ServeHTTP(writer, req)
 	})

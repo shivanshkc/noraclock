@@ -1,2 +1,4 @@
 .idea
+.git
+static
 bin/service
