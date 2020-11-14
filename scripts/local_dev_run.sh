@@ -11,7 +11,7 @@ echo "Configs successfully sourced."
 set +a
 
 echo "############### Building Application Binary ###############"
-if ! go build -o bin/service ./main.go; then
+if ! CGO_ENABLED=0 GOOS=linux go build -o bin/service; then
   echo "Failed to build application binary."
   exit 1
 fi
