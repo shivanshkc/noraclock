@@ -1,11 +1,11 @@
 package server
 
 import (
+	"github.com/gorilla/handlers"
+	"net/http"
 	"noraclock/src/configs"
 	"noraclock/src/logger"
 	"noraclock/src/router"
-	"github.com/gorilla/handlers"
-	"net/http"
 )
 
 var conf = configs.Get()
