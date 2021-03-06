@@ -12,6 +12,11 @@ const (
 	CouchDeletedReason = "deleted"
 	// CouchUpdateConflictReason : Reason returned when document updation is attempted without latest rev.
 	CouchUpdateConflictReason = "Document update conflict."
+
+	// CouchDesign : Name of the Design document in CouchDB.
+	CouchDesign = "noraDesign"
+	// CouchListMemoriesView : Name of the view which fetches the list of memories.
+	CouchListMemoriesView = "listMemories"
 )
 
 const (

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"net/http"
+	"net/url"
 	"noraclock/src/configs"
 	"noraclock/src/constants"
 	"noraclock/src/database"
@@ -117,5 +118,57 @@ func (m *memory) Patch(args map[string]interface{}) (int, map[string]string, []b
 }
 
 func (m *memory) List(args map[string]interface{}) (int, map[string]string, []byte, error) {
-	return 0, nil, nil, nil
+	limit, lExists := args["limit"]
+	offset, oExists := args["offset"]
+	skipBody, sExists := args["skipBody"]
+
+	if !lExists || limit == "" {
+		limit = "100"
+	}
+	if !oExists || offset == "" {
+		offset = "0"
+	}
+	if !sExists || skipBody == "" {
+		skipBody = false
+	}
+
+	query := url.Values{}
+	query.Set("limit", limit.(string))
+	query.Set("skip", offset.(string))
+	query.Set("include_docs", "true")
+
+	_, count, results, err := database.CouchDB.GetDocsByView(conf.CouchDB.Database, constants.CouchDesign, constants.CouchListMemoriesView, query)
+	if err != nil {
+		return 0, nil, nil, err
+	}
+
+	var memories []interface{}
+	for _, result := range results {
+		resultMap, ok := result.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		doc, exists := resultMap["doc"]
+		if !exists {
+			continue
+		}
+		docMap, ok := doc.(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		if skipBody == "false" {
+			delete(docMap, "body")
+		}
+		memories = append(memories, docMap)
+	}
+
+	body, err := json.Marshal(map[string]map[string]interface{}{
+		"data": {"count": count, "docs": memories},
+	})
+	if err != nil {
+		log.Sugar().Errorf("Memory.List: Failed to marshal response body: %s", err.Error())
+		return 0, nil, nil, err
+	}
+	return http.StatusOK, nil, body, nil
 }

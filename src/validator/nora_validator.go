@@ -1,7 +1,5 @@
 package validator
 
-import "fmt"
-
 // Nora implements the validations methods for NoraAccess APIs.
 var Nora = &noraValidator{}
 

@@ -1,6 +1,8 @@
 package database
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 func isSuccessCode(statusCode int) bool {
 	return statusCode < 300
