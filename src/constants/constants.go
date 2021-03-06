@@ -30,5 +30,5 @@ const (
 	MemBodyMaxLen = 1000
 
 	// MemBodyMinLen : Min length for a memory body.
-	MemBodyMinLen = 1
+	MemBodyMinLen = 0
 )
