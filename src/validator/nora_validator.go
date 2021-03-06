@@ -37,3 +37,16 @@ func (n *noraValidator) PostMemory(args map[string]interface{}) []error {
 
 	return errs
 }
+
+func (n *noraValidator) DeleteMemory(args map[string]interface{}) []error {
+	var errs []error
+
+	memID, exists := args["memoryID"]
+	if !exists {
+		errs = append(errs, errMemoryID)
+	} else if err := memoryIDRule.Apply(memID); err != nil {
+		errs = append(errs, err)
+	}
+
+	return errs
+}

@@ -54,7 +54,26 @@ func getMemoryHandler(writer http.ResponseWriter, req *http.Request) {
 
 func patchMemoryHandler(writer http.ResponseWriter, req *http.Request) {}
 
-func deleteMemoryHandler(writer http.ResponseWriter, req *http.Request) {}
+func deleteMemoryHandler(writer http.ResponseWriter, req *http.Request) {
+	args := map[string]interface{}{
+		"memoryID": mux.Vars(req)["memoryID"],
+	}
+
+	if errs := validator.Nora.DeleteMemory(args); len(errs) > 0 {
+		exception.Send(exception.Validation().AddErrors(errs...), writer)
+		return
+	}
+
+	status, headers, body, err := business.Memory.Delete(args)
+	if err != nil {
+		exception.Send(err, writer)
+		return
+	}
+	if status == 0 {
+		return
+	}
+	sendResponse(writer, status, headers, body)
+}
 
 func listMemoriesHandler(writer http.ResponseWriter, req *http.Request) {}
 
