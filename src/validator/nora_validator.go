@@ -80,3 +80,9 @@ func (n *noraValidator) PatchMemory(args map[string]interface{}) []error {
 	}
 	return errs
 }
+
+func (n *noraValidator) ListMemories(args map[string]interface{}) []error {
+	var errs []error
+
+	return errs
+}

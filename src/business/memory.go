@@ -115,3 +115,7 @@ func (m *memory) Patch(args map[string]interface{}) (int, map[string]string, []b
 	}
 	return http.StatusOK, nil, nil, nil
 }
+
+func (m *memory) List(args map[string]interface{}) (int, map[string]string, []byte, error) {
+	return 0, nil, nil, nil
+}

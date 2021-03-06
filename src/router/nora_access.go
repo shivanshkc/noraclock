@@ -99,7 +99,28 @@ func deleteMemoryHandler(writer http.ResponseWriter, req *http.Request) {
 	sendResponse(writer, status, headers, body)
 }
 
-func listMemoriesHandler(writer http.ResponseWriter, req *http.Request) {}
+func listMemoriesHandler(writer http.ResponseWriter, req *http.Request) {
+	args := map[string]interface{}{
+		"limit":    req.URL.Query().Get("limit"),
+		"offset":   req.URL.Query().Get("offset"),
+		"skipBody": req.URL.Query().Get("skipBody"),
+	}
+
+	if errs := validator.Nora.ListMemories(args); len(errs) > 0 {
+		exception.Send(exception.Validation().AddErrors(errs...), writer)
+		return
+	}
+
+	status, headers, body, err := business.Memory.List(args)
+	if err != nil {
+		exception.Send(err, writer)
+		return
+	}
+	if status == 0 {
+		return
+	}
+	sendResponse(writer, status, headers, body)
+}
 
 func postMemoryHandler(writer http.ResponseWriter, req *http.Request) {
 	args := map[string]interface{}{}
