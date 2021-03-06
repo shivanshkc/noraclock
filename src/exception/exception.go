@@ -51,6 +51,7 @@ func Send(err error, writer http.ResponseWriter) {
 		exc = Unexpected()
 	}
 
+	writer.Header().Set("content-type", "application/json")
 	writer.WriteHeader(exc.StatusCode)
 	_, wErr := writer.Write(exc.ToJSON())
 	if wErr != nil {

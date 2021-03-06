@@ -1,4 +1,10 @@
 {
+  "couchdb": {
+    "address": "http://127.0.0.1:5984",
+    "username": "dev",
+    "password": "dev",
+    "database": "nora-db"
+  },
   "logger": {
     "generalFilePath": "../logs/general.log",
     "accessFilePath": "../logs/access.log",
@@ -9,6 +15,7 @@
   },
   "service": {
     "name": "Noraclock",
-    "version": "v2.0.0"
+    "version": "v2.0.0",
+    "password": "dev"
   }
 }

@@ -17,6 +17,7 @@ func Get() http.Handler {
 	router := mux.NewRouter()
 
 	router.Use(middleware.Interceptor)
+	router.Use(middleware.CORS)
 
 	apiRouter := attachAPIRouter(router.PathPrefix("/api").Subrouter())
 	_ = attachNoraAccess(apiRouter.PathPrefix("/noraAccess").Subrouter())
