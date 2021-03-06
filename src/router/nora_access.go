@@ -5,9 +5,12 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"noraclock/src/constants"
+	"noraclock/src/middleware"
 )
 
 func attachNoraAccess(router *mux.Router) *mux.Router {
+	router.Use(middleware.NoraGuard)
+
 	router.HandleFunc("/time", getTimeHandler).Methods(http.MethodGet, http.MethodOptions)
 
 	router.HandleFunc("/memory/{memoryID}", getMemoryHandler).Methods(http.MethodGet, http.MethodOptions)

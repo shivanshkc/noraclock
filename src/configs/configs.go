@@ -23,6 +23,7 @@ type Values struct {
 		// Name of the service.
 		Name string `json:"name" default:"Noraclock"`
 		// Version of the service.
-		Version string `json:"version" default:"v1.0.0"`
+		Version  string `json:"version" default:"v1.0.0"`
+		Password string `json:"password" default:"secret"`
 	} `json:"service"`
 }
