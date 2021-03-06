@@ -1,4 +1,10 @@
 {
+  "couchdb": {
+    "address": "http://127.0.0.1:5984",
+    "username": "dev",
+    "password": "dev",
+    "database": "nora-db"
+  },
   "logger": {
     "generalFilePath": "../logs/general.log",
     "accessFilePath": "../logs/access.log",

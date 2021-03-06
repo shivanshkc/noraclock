@@ -1,11 +1,15 @@
 package router
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
+	"noraclock/src/business"
 	"noraclock/src/constants"
+	"noraclock/src/exception"
 	"noraclock/src/middleware"
+	"noraclock/src/validator"
 )
 
 func attachNoraAccess(router *mux.Router) *mux.Router {
@@ -27,7 +31,26 @@ func getTimeHandler(writer http.ResponseWriter, req *http.Request) {
 	sendResponse(writer, http.StatusOK, nil, []byte(fmt.Sprintf(`{"time":%d}`, constants.NoraTime)))
 }
 
-func getMemoryHandler(writer http.ResponseWriter, req *http.Request) {}
+func getMemoryHandler(writer http.ResponseWriter, req *http.Request) {
+	args := map[string]interface{}{
+		"memoryID": mux.Vars(req)["memoryID"],
+	}
+
+	if errs := validator.Nora.GetMemory(args); len(errs) > 0 {
+		exception.Send(exception.Validation().AddErrors(errs...), writer)
+		return
+	}
+
+	status, headers, body, err := business.Memory.Get(args)
+	if err != nil {
+		exception.Send(err, writer)
+		return
+	}
+	if status == 0 {
+		return
+	}
+	sendResponse(writer, status, headers, body)
+}
 
 func patchMemoryHandler(writer http.ResponseWriter, req *http.Request) {}
 
@@ -35,4 +58,26 @@ func deleteMemoryHandler(writer http.ResponseWriter, req *http.Request) {}
 
 func listMemoriesHandler(writer http.ResponseWriter, req *http.Request) {}
 
-func postMemoryHandler(writer http.ResponseWriter, req *http.Request) {}
+func postMemoryHandler(writer http.ResponseWriter, req *http.Request) {
+	args := map[string]interface{}{}
+
+	err := json.NewDecoder(req.Body).Decode(&args)
+	if err != nil {
+		exception.Send(exception.Validation().AddMessages("Invalid Body"), writer)
+	}
+
+	if errs := validator.Nora.PostMemory(args); len(errs) > 0 {
+		exception.Send(exception.Validation().AddErrors(errs...), writer)
+		return
+	}
+
+	status, headers, body, err := business.Memory.Post(args)
+	if err != nil {
+		exception.Send(err, writer)
+		return
+	}
+	if status == 0 {
+		return
+	}
+	sendResponse(writer, status, headers, body)
+}
