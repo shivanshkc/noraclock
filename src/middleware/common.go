@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"context"
-	"noraclock/src/logger"
 	"github.com/google/uuid"
 	"net/http"
+	"noraclock/src/logger"
 	"time"
 )
 

@@ -2,11 +2,11 @@ package router
 
 import (
 	"fmt"
+	"github.com/gorilla/mux"
+	"net/http"
 	"noraclock/src/configs"
 	"noraclock/src/logger"
 	"noraclock/src/middleware"
-	"github.com/gorilla/mux"
-	"net/http"
 )
 
 var conf = configs.Get()
@@ -19,7 +19,7 @@ func Get() http.Handler {
 	router.Use(middleware.Interceptor)
 
 	apiRouter := attachAPIRouter(router.PathPrefix("/api").Subrouter())
-	_ = attachDummyRouter(apiRouter.PathPrefix("/dummy").Subrouter())
+	_ = attachNoraAccess(apiRouter.PathPrefix("/noraAccess").Subrouter())
 
 	return router
 }
