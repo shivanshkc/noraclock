@@ -1,5 +1,7 @@
 package validator
 
+import "fmt"
+
 // Nora implements the validations methods for NoraAccess APIs.
 var Nora = &noraValidator{}
 
@@ -83,6 +85,27 @@ func (n *noraValidator) PatchMemory(args map[string]interface{}) []error {
 
 func (n *noraValidator) ListMemories(args map[string]interface{}) []error {
 	var errs []error
+
+	limit, lExists := args["limit"]
+	if lExists {
+		if err := limitRule.Apply(limit); err != nil {
+			errs = append(errs, err)
+		}
+	}
+
+	offset, oExists := args["offset"]
+	if oExists {
+		if err := offsetRule.Apply(offset); err != nil {
+			errs = append(errs, err)
+		}
+	}
+
+	skipBody, sExists := args["skipBody"]
+	if sExists {
+		if err := skipBodyRule.Apply(skipBody); err != nil {
+			errs = append(errs, err)
+		}
+	}
 
 	return errs
 }
