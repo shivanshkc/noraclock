@@ -11,8 +11,7 @@ func (n *noraValidator) GetMemory(args map[string]interface{}) []error {
 	memID, exists := args["memoryID"]
 	if !exists {
 		errs = append(errs, errMemoryID)
-	}
-	if err := memoryIDRule.Apply(memID); err != nil {
+	} else if err := memoryIDRule.Apply(memID); err != nil {
 		errs = append(errs, err)
 	}
 
@@ -25,16 +24,14 @@ func (n *noraValidator) PostMemory(args map[string]interface{}) []error {
 	title, exists := args["title"]
 	if !exists {
 		errs = append(errs, errTitle)
-	}
-	if err := titleRule.Apply(title); err != nil {
+	} else if err := titleRule.Apply(title); err != nil {
 		errs = append(errs, err)
 	}
 
 	body, exists := args["body"]
 	if !exists {
 		errs = append(errs, errBody)
-	}
-	if err := bodyRule.Apply(body); err != nil {
+	} else if err := bodyRule.Apply(body); err != nil {
 		errs = append(errs, err)
 	}
 

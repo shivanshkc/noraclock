@@ -64,6 +64,7 @@ func postMemoryHandler(writer http.ResponseWriter, req *http.Request) {
 	err := json.NewDecoder(req.Body).Decode(&args)
 	if err != nil {
 		exception.Send(exception.Validation().AddMessages("Invalid Body"), writer)
+		return
 	}
 
 	if errs := validator.Nora.PostMemory(args); len(errs) > 0 {

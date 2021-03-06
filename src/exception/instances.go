@@ -17,6 +17,11 @@ var MemoryNotFound = func() *Exception {
 	return &Exception{StatusCode: http.StatusNotFound, CustomCode: "MEMORY_NOT_FOUND", Messages: []string{}}
 }
 
+// MemoryAlreadyExists : Thrown when an already existing memory is attempted for creation.
+var MemoryAlreadyExists = func() *Exception {
+	return &Exception{StatusCode: http.StatusNotFound, CustomCode: "MEMORY_NOT_FOUND", Messages: []string{}}
+}
+
 // Unexpected : Thrown when an unknown misbehaviour occurs.
 var Unexpected = func() *Exception {
 	return &Exception{http.StatusInternalServerError, "INTERNAL_SERVER_ERROR", []string{}}
