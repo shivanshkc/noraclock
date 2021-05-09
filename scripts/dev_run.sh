@@ -3,7 +3,7 @@
 export CONF_FILE_PATH=conf/dev.json
 
 echo "########### Building Application Binary ############"
-if ! GOOS=linux go build -o bin/application; then
+if ! go build -o bin/application; then
   echo "Failed to build application binary."
   exit 1
 fi

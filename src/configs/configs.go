@@ -2,13 +2,18 @@ package configs
 
 // Values represents the configuration schema.
 type Values struct {
-	// CouchDB configs.
-	CouchDB struct {
-		Address  string `json:"address" default:"http://127.0.0.1:5984"`
-		Username string `json:"username" default:"dev"`
-		Password string `json:"password" default:"dev"`
-		Database string `json:"database" default:"nora-db"`
-	} `json:"couchdb"`
+	// Database holds the database related configs.
+	Database struct {
+		// Address is database of the database.
+		Address string `json:"address"`
+		// DatabaseName is the name of the database.
+		DatabaseName string `json:"database_name" default:"noraclock"`
+		// RequestTimeoutSeconds is the timeout in seconds for any database request.
+		RequestTimeoutSeconds int `json:"request_timeout_seconds" default:"10"`
+		// MemoryCollectionName is the name of the memory collection.
+		MemoryCollectionName string `json:"memory_collection_name" default:"memories"`
+	} `json:"database"`
+
 	// Logger configs.
 	Logger struct {
 		// GeneralFilePath is the location of the general log file.
@@ -30,7 +35,8 @@ type Values struct {
 		// Name of the service.
 		Name string `json:"name" default:"Noraclock"`
 		// Version of the service.
-		Version  string `json:"version" default:"v1.0.0"`
+		Version string `json:"version" default:"v1.0.0"`
+		// Password of the service.
 		Password string `json:"password" default:"secret"`
 	} `json:"service"`
 }

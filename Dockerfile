@@ -15,6 +15,7 @@ WORKDIR /usr/bin
 
 # Copy the files to the production image from the builder stage.
 COPY --from=builder /code/bin .
+COPY --from=builder /code/public ./public
 
 # Run the web service on container startup.
 CMD ["application"]
