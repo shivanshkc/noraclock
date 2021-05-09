@@ -7,6 +7,9 @@ import (
 	"noraclock/src/configs"
 	"noraclock/src/logger"
 	"noraclock/src/middleware"
+	"os"
+	"path"
+	"path/filepath"
 )
 
 var conf = configs.Get()
@@ -21,6 +24,17 @@ func Get() http.Handler {
 
 	apiRouter := attachAPIRouter(router.PathPrefix("/api").Subrouter())
 	_ = attachNoraAccess(apiRouter.PathPrefix("/noraAccess").Subrouter())
+
+	router.PathPrefix("/").HandlerFunc(func(writer http.ResponseWriter, req *http.Request) {
+		fileToServe := filepath.Join("public", path.Clean(req.URL.Path))
+		fileInfo, err := os.Stat(fileToServe)
+
+		if (os.IsNotExist(err) || !fileInfo.Mode().IsRegular()) && path.Ext(fileToServe) == "" {
+			fileToServe = filepath.Join("public", "/index.html")
+		}
+
+		http.ServeFile(writer, req, fileToServe)
+	})
 
 	return router
 }

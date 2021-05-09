@@ -1,0 +1,22 @@
+{
+  "api": {
+    "address": "http://www.noraclock.com/api",
+    "time": "noraAccess/time",
+    "memory": "noraAccess/memory"
+  },
+  "data": {
+    "phrases": [
+      "The clock goes ever on and on...",
+      "The Eyes of My Mistress...",
+      "You have made me so, my love.",
+      "You, My Woman Dressed in Dusk...",
+      "Accurate, down to the seconds.",
+      "Hm, Gold Digger.",
+      "Since you said 11.6 Km/s...",
+      "Hey, Kushina.",
+      "Let's go to the Vintage Inn...",
+      "Our Golden Summertime...",
+      "The One Rose in my garden..."
+    ]
+  }
+}
